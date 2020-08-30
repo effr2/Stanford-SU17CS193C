@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Book Search</title>
+<link rel="stylesheet" type="text/css" href="bookland.css">
+</head>
+<body>
+<div id="all">
+    <h1 id="pagetitle">bookland</h1>
+<div id="main">
+         <div class="sec">
+        
+            <div class="fieldEntry">
+                <div class="leftColumn">
+                    <p>Author name:</p>
+                    <p>Book title:</p>
+                </div>
+                <div class="rightColumn">
+                    <input type="text" id="authorField">
+                    <input type="text" id="bookTitleField">
+                    <div id="buttons">
+                        <button id="searchButton" type="submit">Find Book</button>
+                        <button id="clearButton" type="submit">Clear Info</button>  
+                    </div>
+                    
+                </div>
+            </div>
+        </div>
+        <div class="sec">
+                <textarea id="textAreaField" rows="6" cols="40"> </textarea>
+    </div>
+        </div>
+</div>
+
+   
+</body>
+<script>
+var bookDict = {
+"death in venice": "One of the most famous literary works of the twentieth \n century, this novella embodies themes that preoccupied Thomas Mann in much\n of his work: the duality of art and life, the presence of death and\ndisintegration in the midst of existence, the connection between love and\n suffering and the conflict between the artist and his inner self.",
+
+"a portrait of the artist as a young man" :
+"This book is a fictional re-creation of the Irish writer's\n own life and early environment. The experiences of the novel's young hero,\nunfold in astonishingly vivid scenes that seem freshly recalled from life\nand provide a powerful portrait of the coming of age of a young man of\n unusual intelligence, sensitivity and character.",
+
+"a room with a view" : "This work displays an unusually perceptive view of British\n society in the early 20th century.It is a social comedy set in Florence,\n Italy, and Surrey, England. Its heroine, Lucy Honeychurch, struggling\nagainst straitlaced Victorian attitudes of arrogance, narrow mindedness\nand sobbery, falls in love - while on holiday in Italy - with the sociall\nunsuitable George Emerson.",
+
+"the house of spirits" : "Allende describes the life of three generations of a\nprominent family in Chile and skillfully combines with this all the main\nhistorical events of the time, up until Pinochet's dictatorship." ,
+
+"of love and shadows": "The whole world of Irene Beltran, a young reporter in Chile\nat the time of the dictatorship, is destroyed when she discovers a series \n of killings carried out by government soldiers. With the help of a\nphotographer, Francisco Leal, and risking her life, she tries to come up\n with evidence against the dictatorship."
+} 
+
+var authorDict = {
+    "thomas mann": bookDict["death in venice"],
+    "james joyce": bookDict["a portrait of the artist as a young man"],
+    "e. m. forster": bookDict["a room with a view"],
+    "isabel allende": ["the house of spirits", "of love and shadows"]
+}
+
+
+function searchBook() {
+    var author = (document.getElementById("authorField").value).toLowerCase();
+    var title = (document.getElementById("bookTitleField").value).toLowerCase();
+
+    var descriptionText = "Book Not Found";
+    if(title){
+        if(author){
+            descriptionText = authorDict[author];
+        }
+        else{
+            descriptionText = bookDict[title];
+
+        }
+    }
+    else if(author)
+    {
+        if(title){
+            descriptionText = bookDict[title];
+        }
+        else{
+            descriptionText = authorDict[author];
+        }
+    }
+    else{
+        descriptionText = bookDict[title];
+    }
+    var decriptionField = document.getElementById("textAreaField").value;
+
+    if(descriptionText){
+        decriptionField = descriptionText;
+    }
+    
+}
+
+function clearInfo() {
+    document.getElementById("textAreaField").innerHTML = " " ;
+}
+
+document.getElementById("clearButton").addEventListener("click",clearInfo,false);
+document.getElementById("searchButton").addEventListener("click",searchBook,false);
+
+</script>
+</html>

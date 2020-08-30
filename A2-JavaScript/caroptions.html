@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Configure your GT Super Sportscar</title>
+<link type="text/css" rel="stylesheet" href="caroptions.css" />
+</head>
+<body>
+<div id="all">
+<h1 id="pageTitle">Configure your GT Super Sportscar</h1>
+<div id="main">   
+<div id="leftColumn">
+<div class="sec" id="configurationSec">
+<div class="titleBar">
+<h1 class="titleText">Configuration</h1>
+</div>
+<div class="option">
+<form class="optionLeftColumn">
+<label><input type="radio" name="configSelect" checked="checked" id="gtMan" />GT Manual</label>
+<label><input type="radio" name="configSelect" id="gtAuto" />GT Automatic</label>
+<label><input type="radio" name="configSelect" id="gtsMan" />GT-S Manual</label>
+<label><input type="radio" name="configSelect" id="gtsSportShift" />GT-S SportShift</label>
+</form>
+<div class="optionRightColumn">
+<p id="gtManPrice">$17,790.00</p>
+<p id="gtAutoPrice">$18,590.00</p>
+<p id="gtsManPrice">$22,455.00</p>
+<p id="gtsSportShiftPrice">$23,155.00</p>
+</div>
+</div>
+</div>
+<div class="sec" id="factorySec">
+<div class="titleBar">
+<h1 class="titleText">Factory Options</h1>
+</div>
+<div class="subSec">
+<div class="option">
+<div class="optionLeftColumn" >
+<label><input type="radio" name="packageSelect" checked="checked" id="combo1" /> Optional Combo #1</label><br />
+<ul>
+<li>Power Windows, Doors, Cruise Control</li>
+</ul>
+</div>
+<div class="optionRightColumn">
+<p  id="combo1Price">$1,235.00</p>
+</div>
+</div>
+<div class="option">
+<div class="optionLeftColumn">
+<label><input type="radio" name="packageSelect" id="combo2" />Optional Combo #2</label><br />
+<ul>
+<li>Rear Spoiler and Fog Lamps</li>
+<li>Keyless Entry</li>
+<li>Power Tilt &amp; Slide Moonroof</li>
+<li>Power Windows, Doors, Cruise Control</li>
+</ul>
+</div>
+<div class="optionRightColumn">
+<p id="combo2Price">$3,354.00</p>
+</div>
+</div>                     
+<div class="option">
+<div class="optionLeftColumn">
+<label><input type="radio" name="packageSelect" id="noCombo" />None</label><br />
+</div>
+<div class="optionRightColumn">
+<p id="noComboPrice">$0</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sec" id="dealerSec">
+<div class="titleBar">
+<h1 class="titleText">Dealer Options</h1>
+</div>
+<div class="subSec">
+<div class="option">
+<div class="optionLeftColumn">
+<label><input type="checkbox" id="stereoPrice" onclick="calculateDealerPrice();" />Upgrade Stereo System</label>
+</div>
+<div class="optionRightColumn">
+<p id="stereoPriceAmount">$550.00</p>
+</div>
+</div>
+<div class="option">
+<div class="optionLeftColumn">
+<label><input type="checkbox" id="vipSecurityPrice" onclick="calculateDealerPrice();" />VIP Security System</label>
+</div>
+<div class="optionRightColumn">
+<p id="vipSecurityPriceAmount">$399.00</p>
+</div>
+</div>
+<div class="option">
+<div class="optionLeftColumn">
+<label><input type="checkbox" id="autoDimmingMirrorPrice" onclick="calculateDealerPrice();" />Auto-Dimming Mirror
+</label>
+</div>
+<div class="optionRightColumn">
+<p id="autoDimmingMirrorPriceAmount">$295.00</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sec" id="totalSec">
+<div class="titleBar">
+<h1 class="titleText">Total Price</h1>
+</div>
+<div class="subSec">
+<div class="option">
+<div class="optionLeftColumn">
+<input type="text" id="total" value="0" size="20" />
+</div>
+<div class="optionRightColumn">
+<input type="button" id="calculateButton" value="Calculate Total" />
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="rightColumn">
+<div class="sec" id="colorSec">
+<div class="titleBar">
+<h1 class="titleText">Choose a Color</h1>
+</div>
+<div class="option">
+<div class="leftoption">
+        
+</div>
+<div class="rightoption">
+<img id="carPhoto" src="red.jpg" alt="Vehicle Photo" />        
+</div>
+</div>
+</div>
+</div>       
+</div>
+</div>
+</body>
+<script>
+    var options = [17790.00, 1235.00, 0.00];
+    var dealerPriceList = ["stereoPrice", "vipSecurityPrice", "autoDimmingMirrorPrice"];
+    var configurationList = ["gtMan", "gtAuto", "gtsMan", "gtsSportShift"];
+    var factoryOptionsList = ["combo1", "combo2", "noCombo"];
+    
+    function convertString(stringAmount) {
+        return parseFloat(stringAmount.replace(/[^0-9\.]+/g,""));
+    }
+
+    function calculateConfigPrice () {
+        var total = 0.00;
+        for (name of configurationList) {
+            if(document.getElementById(name).checked){
+                options[0] = convertString(document.getElementById(name+"Price").innerHTML);
+                return
+            }
+        }
+    }
+    function calculateFactoryPrice () {
+        var total = 0.00;
+        for (name of factoryOptionsList) {
+            if(document.getElementById(name).checked){
+              
+                options[1] = convertString(document.getElementById(name+"Price").innerHTML);
+                return
+            }
+        }
+    }
+    
+    function calculateDealerPrice () {
+        var total = 0.00;
+        for(name of dealerPriceList) {
+            if (document.getElementById(name).checked) {
+                var price = document.getElementById(name + "Amount").innerHTML;
+                total += convertString(price);
+                }
+        }
+        options[2] = total;
+    }
+
+
+function calculateTotal () {
+    var total = 0.00;
+    for (var index = 0; index < 3; index++) {
+        total += options[index];
+    }
+    document.getElementById("total").value = "$"+total;
+}
+
+for(name of configurationList) {
+    document.getElementById(name).addEventListener("click",calculateConfigPrice,false);
+}
+for(name of factoryOptionsList) {
+    document.getElementById(name).addEventListener("click",calculateFactoryPrice,false);
+}
+for(name of dealerPriceList) {
+	 document.getElementById(name).addEventListener("click",calculateDealerPrice,false);
+}
+
+document.getElementById("calculateButton").addEventListener("click",calculateTotal,false);
+
+
+
+</script>
+</html>
