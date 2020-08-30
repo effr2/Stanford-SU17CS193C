@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8" />
+<title>Stanford Gallery</title>
+<style>
+body{
+	margin: 0px;
+}
+#caption {
+	padding: 10px;
+	box-sizing: border-box;
+	color: white;
+	font-size: 14pt;
+	font-family: sans-serif;
+	background-color: #008800;
+	opacity: 0.5;
+	position: absolute;
+	bottom: 0;
+	width: 800px;
+}
+#photoSection{
+	position: absolute;
+}
+.overlay{
+	position: absolute;
+	height:600px;
+	width: 400px;
+	top: 0px;
+}
+#forwardOverlay{
+	right: 0px;
+}
+#backwardOverlay{
+	left: 0px; 
+}
+#photo{
+	height:600px;
+	width: 800px;
+}
+</style>
+</head>
+<body id="body">
+<div id="photoSection">
+<img  id="photo" src="memchu.jpg" alt="photo" />
+<div id="caption">
+Stanford Memorial Church - the church used to have an 80' bell tower, which fell in the 1906 earthquake.
+</div>
+<div id="forwardOverlay" class="overlay"></div>
+<div id="backwardOverlay" class="overlay"> </div>
+</div>
+<script>
+"use strict";
+
+var photoArray = [
+		{filename: "memchu.jpg",
+		 caption: "Stanford Memorial Church - the church used to have an 80' bell tower, which fell in the 1906 earthquake."},
+		{filename: "quad.jpg",
+		 caption: "The Stanford Quad"},
+		{filename: "hoop.jpg",
+		 caption: "The <i>Red Hoop Fountain</i> with Green Library in the background."},
+		{filename: "memorial-court.jpg",
+		 caption: "Memorial Court (in the front of the Quad) with Rodin's <i>Burghers of Calais</i> statues."},
+		{filename: "gates.jpg",
+		 caption: "The Gates Building - home of Stanford Computer Science."},
+		{filename: "stone-river.jpg",
+		 caption: "The Stone River statue near the Cantor Arts Center (Stanford's own art museum)."},
+	];
+	
+function handleResize(){
+	center();
+}
+function center(){
+	var windowXCenter = window.innerWidth/2;
+	var windowYCenter = window.innerHeight/2;
+	var secXCenter = 400;
+	var secYCenter = 300;
+	var secXTranslation = `${windowXCenter - secXCenter}px`;
+	var secYTranslation = `${windowYCenter - secYCenter}px`;
+	var photoSec = document.getElementById("photoSection");
+	photoSec.style.left = secXTranslation;
+	photoSec.style.top = secYTranslation;
+}
+function isPhoto(photo){
+	var currPhotoSrc = document.getElementById("photo").src;
+	var pngPattern = /[\w-]*.jpg/;
+	var currPhotoName = currPhotoSrc.match(pngPattern)[0];
+
+	return currPhotoName == photo.filename;
+}
+function nextPic(){
+	 var currentPhotoIndex = photoArray.findIndex(isPhoto);
+	if (currentPhotoIndex >= 0){
+		var nextPhotoIndex = currentPhotoIndex + 1;
+		if(nextPhotoIndex < photoArray.length){
+			document.getElementById("photo").src = photoArray[nextPhotoIndex].filename;
+			document.getElementById("caption").innerHTML = photoArray[nextPhotoIndex].caption;
+		}
+		else{
+			document.getElementById("photo").src = photoArray[0].filename;
+			document.getElementById("caption").innerHTML = photoArray[0].caption;
+		}
+	} 
+}
+function prevPic(){
+	var currentPhotoIndex = photoArray.findIndex(isPhoto);
+	if (currentPhotoIndex >= 0){
+		var prevPhotoIndex = currentPhotoIndex - 1;
+		if(prevPhotoIndex >= 0){
+			document.getElementById("photo").src = photoArray[prevPhotoIndex].filename;
+			document.getElementById("caption").innerHTML = photoArray[prevPhotoIndex].caption;
+		}
+		else{
+			document.getElementById("photo").src = photoArray[5].filename;
+			document.getElementById("caption").innerHTML = photoArray[5].caption;
+		}
+	}
+}
+
+window.addEventListener("resize",handleResize,false);
+document.getElementById("body").onload = center();
+document.getElementById("forwardOverlay").addEventListener("click", nextPic,false);
+document.getElementById("backwardOverlay").addEventListener("click", prevPic,false);
+</script>
+</body>
+</html>

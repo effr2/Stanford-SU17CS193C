@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>Stanford Map</title>
+    </head>
+    <style>
+    body{
+        margin: 0px;
+    }
+    #mapFrame{
+        overflow: hidden;
+        position: absolute;
+        margin: 20px;
+        padding: 0px;
+        border: 30px solid gray;
+    }
+    #map{
+        position: absolute;
+    }
+    #nav{
+        position: absolute;
+        display: grid;
+        bottom: 0px;
+        right: 0px
+    }
+    #navButtons{
+        display: grid;
+        grid-column-start: 1;
+        grid-column-end: 1;
+        grid-row-start:1;
+        grid-row-end: 1;
+        align-content: space-evenly;
+    }
+    #zoomButtons{
+        grid-column-start: 1;
+        grid-column-end: 1;
+        grid-row-start:2;
+        grid-row-end: 2;
+    }
+    #moveUp{
+        grid-column-start: 2;
+        grid-column-end: 3;
+        grid-row-start:1;
+        justify-self: center;
+    }
+    #moveDown{
+        grid-column-start: 2;
+        grid-column-end: 3;
+        grid-row-start: 3;
+    }
+    #moveLeft{
+        grid-column-start: 1;
+        grid-column-end: 2;
+        grid-row-start:2;
+        
+    }
+  
+    #moveRight{
+        grid-column-start: 3;
+        grid-column-end: 4;
+        grid-row-start:2;
+    }
+    </style>
+    <body>
+        <div id="mapFrame">
+            <img src="map-l.gif" id="map">
+            <div id="nav">
+             <div id="navButtons">
+                <button type="button" id="moveUp">^</button>
+                <button type="button" id="moveLeft">&lt</button>
+                <button type="button" id="moveRight">&gt</button>
+                <button type="button" id="moveDown">v</button>
+            </div>
+            <div id="zoomButtons">
+                <button type="button" id="zoomIn">+</button>
+                <button type="button" id="zoomOut">-</button>
+            </div>
+        </div>
+        </div>
+        
+    </body>
+    <script>
+        var isDragging = false;
+        var mapImgDOM = document.getElementById("map");
+        var currImgIndex = 2;
+        var mapImgArray = [
+            {filename: "map-s.gif", width:1283 ,height:997},
+            {filename: "map-m.gif", width:2047 ,height:1589},
+            {filename: "map-l.gif",width:3063,height:2373},
+            {filename: "map-xl.gif", width:4084 ,height:3164}
+        ];
+        var cursorCoord = {
+            prevX: 0,
+            prevY: 0
+        };
+        var mapFrame = {
+                getDOM: function(){
+                    return document.getElementById("mapFrame");
+                },
+                getMargin: function(){
+                    return 20;
+                },
+                getBorder: function(){
+                    return 30;
+                },
+                getWidth: function(){
+                    return parseInt(document.defaultView.getComputedStyle(this.getDOM(),"").getPropertyValue("width"));
+                },
+                getHeight: function(){
+                    return parseInt(document.defaultView.getComputedStyle(this.getDOM(),"").getPropertyValue("height"));
+                }       
+        }
+        function mapLeftLimit(){
+            return mapFrame.getMargin()+mapFrame.getBorder();
+        }
+        function mapRightLimit(){
+            return mapFrame.getWidth() + mapLeftLimit();
+        }
+        function mapTopLimit(){
+            return mapLeftLimit();
+        }
+        function mapBottomLimit(){
+            return mapFrame.getHeight() - mapTopLimit();
+        }
+        function isInsideFrame(cursorX, cursorY){
+            return (cursorX >= mapLeftLimit() && cursorX <= mapRightLimit()) && (cursorY >= mapTopLimit() && cursorY <= mapBottomLimit());
+        }
+        function handleMouseDown(evt){
+            evt.preventDefault();
+            var cursorX = evt.clientX;
+            var cursorY = evt.clientY;
+            if(isInsideFrame(cursorX,cursorY)){
+                mapFrame.getDOM().style.cursor = "move";
+                isDragging = true;
+                cursorCoord.prevX = cursorX - parseInt(mapImgDOM.style.left);
+                cursorCoord.prevY = cursorY - parseInt(mapImgDOM.style.top);
+                return false;
+            } 
+        }
+        function handleMouseUp(evt){
+            if(isDragging){
+                isDragging = false;
+                mapFrame.getDOM().style.cursor = "auto";
+                return false;
+            }
+        }
+        function handleMouseMove(evt){
+            if(isDragging){
+                mapImgDOM.style.left =  evt.clientX - cursorCoord.prevX +  "px";
+                mapImgDOM.style.top =   evt.clientY - cursorCoord.prevY + "px";
+                return false;
+            }
+        }
+        function handleDblClick(evt) {
+            var cursorX = evt.clientX;
+            var cursorY = evt.clientY;
+            if(isInsideFrame(cursorX,cursorY)){
+                var mapFrameCenter = [mapFrame.getWidth()/2 + mapLeftLimit(), mapFrame.getHeight()/2 + mapLeftLimit()];
+                mapImgDOM.style.left = mapFrameCenter[0] - cursorCoord.prevX +  "px";
+                mapImgDOM.style.top = mapFrameCenter[1] - cursorCoord.prevY + "px";
+                return false;
+            }
+        }
+        function resizeFrame(){
+            mapFrame.getDOM().style.width = window.innerWidth*.70 + "px";
+            mapFrame.getDOM().style.height = window.innerHeight*.85 + "px";
+        }
+        function zoomIn(){
+            if(currImgIndex<3){
+                var imgWidthRatio = mapImgArray[currImgIndex+1].width / mapImgArray[currImgIndex].width;
+                var imgHeightRatio = mapImgArray[currImgIndex+1].height / mapImgArray[currImgIndex].height;
+                currImgIndex +=1;
+                mapImgDOM.src = mapImgArray[currImgIndex].filename;
+                var relativeX = mapFrame.getWidth()/2 - mapImgDOM.style.width;
+                var relativeY = mapFrame.getHeight()/2 - mapImgDOM.style.height;
+                var scaledX = relativeX * imgWidthRatio;
+                var scaledY = relativeY * imgHeightRatio;
+                mapImgDOM.style.left = mapFrame.getWidth()/2 - scaledX;
+                mapImgDOM.style.top = mapFrame.getHeight()/2 - scaledY;
+            }
+        }
+        function zoomOut(){
+             if(currImgIndex>0){
+                var imgWidthRatio = mapImgArray[currImgIndex-1].width / mapImgArray[currImgIndex].width;
+                var imgHeightRatio = mapImgArray[currImgIndex-1].height / mapImgArray[currImgIndex].height;
+                currImgIndex -=1;
+                mapImgDOM.src = mapImgArray[currImgIndex].filename;
+                var relativeX = mapFrame.getWidth()/2 - mapImgDOM.style.width;
+                var relativeY = mapFrame.getHeight()/2 - mapImgDOM.style.height;
+                var scaledX = relativeX * imgWidthRatio;
+                var scaledY = relativeY * imgHeightRatio;
+                mapImgDOM.style.left = mapFrame.getWidth()/2 + scaledX;
+                mapImgDOM.style.top = mapFrame.getHeight()/2 + scaledY;
+            }
+
+        }
+
+        function moveUp(){
+            console.log("moveUp");
+            mapImgDOM.style.top = parseInt(mapImgDOM.style.top) + 0.1*mapFrame.getHeight() + "px";
+        }
+        function moveLeft(){
+            mapImgDOM.style.left = parseInt(mapImgDOM.style.left) + 0.1*mapFrame.getWidth() + "px";
+            
+        }
+        function moveRight(){
+             mapImgDOM.style.left = parseInt(mapImgDOM.style.left) - 0.1*mapFrame.getWidth() + "px";
+        }
+        function moveDown(){
+            mapImgDOM.style.top = parseInt(mapImgDOM.style.top) - 0.1*mapFrame.getHeight() + "px";
+        }
+        function preloader() {
+            resizeFrame();
+            mapImgDOM.style.left ="0px";
+            mapImgDOM.style.top ="0px";
+            if (document.images) {
+                var sImg = new Image();
+                var mImg = new Image();
+                var lImg = new Image();
+                var xlImg = new Image();
+                sImg.src = mapImgArray[0].filename;
+                mImg.src = mapImgArray[1].filename;
+                lImg.src = mapImgArray[2].filename;
+                xlImg.src = mapImgArray[0].filename
+            }
+        }
+        function addLoadEvent(func) {
+            var oldonload = window.onload;
+            if (typeof window.onload != 'function') {
+                window.onload = func;
+            } else {
+                window.onload = function() {
+                    if (oldonload) {
+                        oldonload();
+                    }
+                    func();
+                }
+            }
+        }
+        addLoadEvent(preloader);
+        document.addEventListener("mousemove",handleMouseMove,false);
+        document.addEventListener("mousedown",handleMouseDown,false);
+        document.addEventListener("mouseup",handleMouseUp,false);
+        document.addEventListener("dblclick",handleDblClick,false);
+        document.getElementById("moveUp").addEventListener("click",moveUp,false);
+        document.getElementById("moveLeft").addEventListener("click",moveLeft,false);
+        document.getElementById("moveRight").addEventListener("click",moveRight,false);
+        document.getElementById("moveDown").addEventListener("click",moveDown,false);
+        document.getElementById("zoomIn").addEventListener("click",zoomIn,false);
+        document.getElementById("zoomOut").addEventListener("click",zoomOut,false); 
+        window.addEventListener("resize",resizeFrame,false);
+    </script>
+</html>
