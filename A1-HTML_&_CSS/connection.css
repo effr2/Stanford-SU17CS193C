@@ -1,0 +1,58 @@
+#main, #biosec {
+    display: flex;
+	flex-direction: row;
+}
+.subsectitle{
+    padding: 0;
+    background-color: #CC9191;
+    border-bottom: 2px solid black;
+    border-top: 2px solid black;
+    font-weight: bold;
+}
+.boldwords{
+    font-weight: bold;
+}
+#first{
+    flex-grow: 6;
+    margin-right: 10px;
+
+}
+#second{
+    flex-grow: 1;
+}
+#bannersec{
+    display: flex;
+    flex-direction: row;
+    align-items: stretch;
+    background-color: #9A0000;
+    margin-bottom: 10px;
+
+}
+#stanfordtitle{
+    flex-grow: 4;
+    color: white;
+    display: block;
+    font-size: 50px;
+    text-align: justify;
+}
+#aboutsubsec{
+    margin-right: 10px;
+}
+#statussubsec{
+    flex: 4;
+}
+#statustitle{
+    padding-top: 0px;
+    padding-left: 0px;
+    padding-right: 0px;
+}
+#statusupdates {
+    font-size: 12pt;
+    list-style-type: none;
+    padding-left: 0px;
+}
+li{
+    border-bottom: 1px solid black;
+    padding: 5px;
+}
+

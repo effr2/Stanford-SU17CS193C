@@ -1,0 +1,21 @@
+h1 {
+    	text-align: center;
+}
+body {
+    font-family: sans-serif;
+}
+a:hover {
+    color: green;
+}
+.stanford {
+    color: red;
+}
+img {
+    float: left;
+    width: 400px;
+    height: 300px;
+}
+
+ul{
+    list-style-type: none;  
+}
