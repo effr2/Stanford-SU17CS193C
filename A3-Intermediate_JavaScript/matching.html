@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <script src="matching.js" defer></script>
+        <title>Matching</title>
+        <style>
+        #main{
+            display: flex;
+            flex-direction: column;
+        }
+        .sec{
+            display: flex;
+            flex-direction: row;
+        }
+        #cardSec{
+            pointer-events: auto;
+        }
+        img{
+            margin: 5px;
+        }
+        </style>
+    </head>
+    <body>
+        <div id="main">
+            <div class="sec" id="cardSec" >
+                <img src="back.png" id="1" alt="Card">
+                <img src="back.png" id="2" alt="Card">
+                <img src="back.png" id="3" alt="Card">
+                <img src="back.png" id="4" alt="Card">
+                <img src="back.png" id="5" alt="Card">
+                <img src="back.png" id="6" alt="Card">  
+            </div>
+            <div class="sec">
+                 <input type="button" id="restartButton" value="Restart Game">
+            </div>
+        </div>
+    </body>
+</html>

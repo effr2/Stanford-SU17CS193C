@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<link rel="stylesheet" type="text/css" href="colleges.css">
+<script src="colleges.js" defer></script>
+<title>Bay Area Colleges and Universities</title>
+</head>
+<body>
+    <div id="pageTitle">
+         <h1>Bay Area Colleges and Universities</h1>
+    </div>
+<div id="main">
+
+    <div id="leftColumn" class="sec">
+        <table id="univTable" >
+            <thead>
+                <tr class="univRow">
+                <th class="tableHeader">Name</th>
+                <th class="tableHeader">SAT High</th>
+                <th class="tableHeader">SAT Low</th>
+                <th class="tableHeader">Tuition</th>
+                </tr>
+            </thead>
+            <tbody id="tableBody"></tbody>
+        </table>
+    </div>
+    <div id="rightColumn" class="sec">
+        <div id="searchForm">
+            <div class="tableHeader">Search Criteria</div>
+            <table>
+            <tr><div>
+                <input type="radio" name="ownershipSelect" checked="checked" value="public">
+                <label>Public</label>
+                <input type="radio" name="ownershipSelect" value="private">
+                <label>Private</label>
+                <input type="radio" name="ownershipSelect" value="don't care">
+                <label>Don't Care</label>
+                </div>
+            </tr>
+            <tr class="rightColumnRow">
+                <td class="searchMsg">Maximum tuition<br> 
+                    <span class="subMsg">leave blank for don't care</span></td>
+                <td class="searchField"><input type="text"  id="maxTuition" value=""></td>
+            </tr>
+            <tr>
+                <td class="searchMsg">Maximum High SAT <br> 
+                    <span class="subMsg">leave blank for don't care</span></td>
+                <td class="searchField"><input type="text" id="maxSAT" value=""></td>
+            </tr>
+            <tr>
+                <td class="searchMsg">Minimum Low SAT <br> 
+                    <span class="subMsg">leave blank for don't care</span> </td>
+                <td class="searchField"><input type="text" id="minSAT" value=""></td>
+            </tr>
+            </table>
+        </div>
+        <div>
+             <input type="button" id="updateButton" value="Update">
+        </div>
+    </div>
+</div>
+</body>
+</html>
