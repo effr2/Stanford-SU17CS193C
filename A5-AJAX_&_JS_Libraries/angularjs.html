@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html ng-app="cityFilter">
+    <head>
+        <meta charset="UTF-8">
+        <script src="angular.js"></script>
+        <script src="city-filter-controller.js"></script>
+        <title>Angular JS</title>
+        
+        <style>
+        
+        </style>
+    </head>
+    <body ng-controller="cityFilterController">
+    <h1>Cities</h1>
+    Search: <input type="text" ng-model="searchString" />
+    <ul>
+    <li ng-repeat="city in cities | filter: searchString">{{city.name}}, {{city.continent}}, {{city.population}}</li>
+    </ul>
+    </body>
+</html>

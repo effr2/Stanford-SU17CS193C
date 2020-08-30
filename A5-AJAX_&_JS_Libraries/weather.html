@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Open Weather</title>
+</head>
+<body>
+<h1>Open Weather via AJAX</h1>
+<form id="zipSec" class="sec">
+    <label for="zipField">Enter Zip Code</label>
+    <input type="text" name ="zip" id="zipField" value="">
+    <input type="button" id="getWeatherButton" value="Get Weather">
+    <input type="button" id="clearButton" value="Clear">
+</form>
+<textarea id="result" rows="8" cols="50"></textarea>
+
+<script>
+var APIKey = "210d3aaa52e4058384cff8a821c410ae";
+function getUrl (){
+    var zipcode = document.getElementById("zipField").value;
+    return `http://api.openweathermap.org/data/2.5/weather?zip=${zipcode},us&units=imperial&APPID=${APIKey}`;
+}
+function displayResult(){
+    var requestObj = null;
+    requestObj = new XMLHttpRequest();
+    requestObj.onreadystatechange = function() {
+    if (requestObj.readyState == 4 && requestObj.status == 200) {
+      var data = JSON.parse(requestObj.responseText);
+      
+    var result =`${data.name}: ${data.main.temp}\n`;
+    var txt=document.createTextNode(result);
+    var res = document.getElementById("result");
+    res.appendChild(txt);
+    }
+  }
+	requestObj.open('GET', getUrl(), true);
+	requestObj.send();
+}
+function clearText(){
+    document.getElementById("result").innerHTML = "";
+}
+
+document.getElementById("getWeatherButton").addEventListener("click",displayResult,false);
+document.getElementById("clearButton").addEventListener("click",clearText,false);
+</script>
+</body>
+</html>
